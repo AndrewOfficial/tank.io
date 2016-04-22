@@ -1,0 +1,18 @@
+app.factory('gf',[function(){
+  var gf = {};
+  gf.getRandomInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  gf.object = function (objects, dimensions){
+    var object = {};
+    object.id = objects.length;
+    object.X_Vel = 0;
+    object.Y_pos = gf.getRandomInt(dimensions.minY, dimensions.maxY);
+    object.X_Vel = 0;
+    object.X_pos = gf.getRandomInt(dimensions.minX, dimensions.maxX);
+    objects.push(object);
+    return objects;
+  };
+  return gf;
+}]);

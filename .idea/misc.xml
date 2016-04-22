@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JscsProjectComponent">
+    <option name="jscsExecutable" value="/usr/local/bin/jscs" />
+    <option name="nodeInterpreter" value="/usr/local/Cellar/node/5.1.0/bin/node" />
+    <option name="treatAllIssuesAsWarnings" value="true" />
+    <option name="pluginEnabled" value="true" />
+    <option name="esprima" value="" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+</project>

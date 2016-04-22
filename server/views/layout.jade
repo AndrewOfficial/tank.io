@@ -1,0 +1,16 @@
+doctype html
+html(ng-app="tankio")
+  head
+    title= title
+    link(rel='stylesheet' href='/lib/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='lib/moment.js')
+    script.
+      moment().format()
+    script(src='lib/angular.min.js')
+    script(src='lib/angular-route.min.js')
+    script(src = '/scripts/appConfig.js')
+    script(src='/scripts/factories/firstFactory.js')
+    script(src='/scripts/controllers/firstCtrl.js')
+  body
+    block content
