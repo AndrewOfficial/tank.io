@@ -161,6 +161,12 @@ function start(done) {
 io.on('connection', function(socket) {
   console.log('Connected socket.io client ' + socket.id);
 
+  socket.on('newPlayer', function(player){
+    player.id = objects.length;
+    console.log(player.id);
+    objects.push(player);
+    socket.emit('id', player.id)
+  });
 
   // Broadcast current state of game objects
   var resetFrame = setInterval(function(){

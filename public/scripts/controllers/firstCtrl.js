@@ -17,13 +17,15 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
   $scope.objects = [];
 
   //new object
-  $scope.newPlayer = gf.newPlayer($scope.objects, dimensions);
-  player.id = $scope.objects.length - 1;
-  console.log(player.id);
+  var player_object = gf.newPlayer(dimensions);
 
-  socket.emit('newPlayer', $scope.objects);
+  socket.emit('newPlayer', player_object);
+  socket.on('id', function(id){
+    console.log('ID', id);
+    player.id = id;
+  });
 
-  document.onkeydown = function(event, $scope.objects.length - 1) {
+  document.onkeydown = function(event) {
     if (!event)
       event = window.event;
     var code = event.keyCode;
@@ -31,21 +33,18 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
       code = event.charCode;
     switch(code) {
       case 65: // left
-        console.log('tasty');
         player.HorVel = -1;
         break;
       case 87: //up
         player.Y_Vel = 1;
         break;
       case 68: //right
-        console.log('I');
         player.HorVel = +1;
         break;
       case 83: //down
         player.Y_Vel = -1;
         break;
     }
-    movePlayer(player);
     event.preventDefault();
   };
 
@@ -57,14 +56,12 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
       code = event.charCode;
     switch(code) {
       case 65: // left
-        console.log('tasty');
         player.HorVel = 0;
         break;
       case 87: //up
         player.Y_Vel = 0;
         break;
       case 68: //right
-        console.log('I');
         player.HorVel = 0;
         break;
       case 83: //down
