@@ -152,21 +152,25 @@ function start(done) {
   server.listen(port, done);
 }
 
-
 var objects = [];
+
 /*
  Attach "connection" event handler to socket.io server
  */
 io.on('connection', function(socket) {
-
   console.log('Connected socket.io client ' + socket.id);
 
-  // Broadcast current list of buzzes
+
+  // Broadcast current state of game objects
   var resetFrame = setInterval(function(){
     objects.forEach(getFrame(object));
-
     socket.emit('frame', objects);
-  }, 1);
+  }, 1000);
+
+   socket.on('move', function(object){
+     console.log('You have moved');
+     objects.push(object);
+   });
 
   // Handler for "buzz" socket events
   //socket.on('buzz', function (name) {

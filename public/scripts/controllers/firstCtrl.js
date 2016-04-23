@@ -1,13 +1,12 @@
-app.controller('firstCtrl', ['$scope', 'gf', '$apply', function ($scope, $apply, gf){
+app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
 
   // io is a global defined by /socket.io/socket.io.js
   var socket = io();
 
   // local variables
-  var minHeight = 450,
-    maxHeight = 150,
-    speedMultiplier = 2,
-    dimensions = {};
+    var speedMultiplier = 2,
+    dimensions = {},
+    player = {};
 
   dimensions.minY = 150;
   dimensions.maxY = 450;
@@ -19,6 +18,7 @@ app.controller('firstCtrl', ['$scope', 'gf', '$apply', function ($scope, $apply,
 
   //new object
   $scope.objects = gf.object($scope.objects, dimensions);
+  player.id = $scope.objects.length - 1;
 
   document.onkeydown = function(event) {
     if (!event)
@@ -29,17 +29,17 @@ app.controller('firstCtrl', ['$scope', 'gf', '$apply', function ($scope, $apply,
     switch(code) {
       case 65: // left
         console.log('tasty');
-        p1.HorVel = -1;
+        player.HorVel = -1;
         break;
       case 87: //up
-        p1.Y_Vel = 1;
+        player.Y_Vel = 1;
         break;
       case 68: //right
         console.log('I');
-        p1.HorVel = +1;
+        player.HorVel = +1;
         break;
       case 83: //down
-        p1.Y_Vel = -1;
+        player.Y_Vel = -1;
         break;
     }
     event.preventDefault();
@@ -54,26 +54,21 @@ app.controller('firstCtrl', ['$scope', 'gf', '$apply', function ($scope, $apply,
     switch(code) {
       case 65: // left
         console.log('tasty');
-        p1.HorVel = 0;
+        player.HorVel = 0;
         break;
       case 87: //up
-        p1.Y_Vel = 0;
+        player.Y_Vel = 0;
         break;
       case 68: //right
         console.log('I');
-        p1.HorVel = 0;
+        player.HorVel = 0;
         break;
       case 83: //down
-        p1.Y_Vel = 0;
+        player.Y_Vel = 0;
         break;
     }
     event.preventDefault();
   };
-
-  // set interval
-  var resetFrame = setInterval(function(){
-    $scope.objects.forEach(getFrame(object));
-  }, 1);
 
 // Update Game Object Positions/info
   socket.on('frame', function (objects) {
@@ -92,27 +87,35 @@ app.controller('firstCtrl', ['$scope', 'gf', '$apply', function ($scope, $apply,
       }
     }
     //$scope.$apply()
-    console.log("EYY")
+    console.log("EYY");
+
+    // next move for player
+    movePlayer(player.id);
   });
 
-  function getFrame(object) {
-    if (object.Y_Vel != 0) {
+  function movePlayer(object) {
+    if ("Y: ", object.Y_Vel != 0) {
       console.log(object.Y_pos);
-      if (object.Y_pos <= minHeight && p1.Y_pos >= maxHeight){
-        object.Y_pos -= p1.Y_Vel * speedMultiplier;
-        object.style.top = p1.Y_pos + 'px';
-      } else if (object.Y_pos > minHeight){
-        object.Y_pos = minHeight;
-      } else if (object.Y_pos < maxHeight){
-        object.Y_pos = maxHeight;
+      if (object.Y_pos <= dimensions.minY && player.Y_pos >= dimensions.maxY){
+        object.Y_pos -= player.Y_Vel * speedMultiplier;
+        object.style.top = player.Y_pos + 'px';
+      } else if (object.Y_pos > dimensions.minY){
+        object.Y_pos = dimensions.minY;
+      } else if (object.Y_pos < dimensions.maxY){
+        object.Y_pos = dimensions.maxY;
       }
     }
-    socket.emit(object);
+    if (object.X_Vel != 0) {
+      console.log("X: ", object.X_pos);
+      if (object.X_pos <= dimensions.minX && player.X_pos >= dimensions.maxX){
+        object.X_pos -= player.X_Vel * speedMultiplier;
+        object.style.top = player.X_pos + 'px';
+      } else if (object.X_pos > dimensions.minX){
+        object.X_pos = dimensions.minX;
+      } else if (object.X_pos < dimensions.maxX){
+        object.X_pos = dimensions.maxX;
+      }
+    }
+    socket.emit('move', object);
   }
-
-  function abortTimer() { // to be called when you want to stop the timer
-    clearInterval(resetFrame);
-  }
-
-
 }]);
