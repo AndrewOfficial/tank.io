@@ -1,4 +1,4 @@
-app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
+app.controller('firstCtrl', ['$scope', 'gf', '$apply', function ($scope, $apply, gf){
 
   // io is a global defined by /socket.io/socket.io.js
   var socket = io();
@@ -75,6 +75,26 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
     $scope.objects.forEach(getFrame(object));
   }, 1);
 
+// Update Game Object Positions/info
+  socket.on('frame', function (objects) {
+    $scope.objects.forEach(function(obj,i){
+      if($scope.objects[i].id === objects[i].id){
+        obj.style = "top:" + objects[i].Y_pos;
+        obj.style = "bottom:" + objects[i].Y_pos;
+      } else {
+        console.log("$scope.id: ",$scope.objects[i].id, "object.id:", objects[i].id)
+      }
+    });
+    // if there are new objects in the game
+    if(objects.length > $scope.objects.length){
+      for (var i = 0; i < objects.length - $scope.objects.length; i++){
+        $scope.objects.push(objects[$scope.objects.length+ i]);
+      }
+    }
+    //$scope.$apply()
+    console.log("EYY")
+  });
+
   function getFrame(object) {
     if (object.Y_Vel != 0) {
       console.log(object.Y_pos);
@@ -87,8 +107,9 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
         object.Y_pos = maxHeight;
       }
     }
-    socket.emit(coordinates, $scope.name);
+    socket.emit(object);
   }
+
   function abortTimer() { // to be called when you want to stop the timer
     clearInterval(resetFrame);
   }

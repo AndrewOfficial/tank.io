@@ -165,27 +165,27 @@ io.on('connection', function(socket) {
   var resetFrame = setInterval(function(){
     objects.forEach(getFrame(object));
 
-    socket.emit('buzz', name);
+    socket.emit('frame', objects);
   }, 1);
 
   // Handler for "buzz" socket events
-  socket.on('buzz', function (name) {
-    // No double-buzzes
-    if (buzzes.indexOf(name) === -1) {
-    // Store buzz
-      buzzes.push(name);
-      // re-broadcast event to other connected sockets
-      io.emit('buzz', name);
-    }
-  });
-
-  // Handler for "reset" socket event
-  socket.on('reset', function() {
-    // reset buzzes Array
-    buzzes = [];
-    // re-broadcast to other connected sockets
-    io.emit('reset');
-  });
+  //socket.on('buzz', function (name) {
+  //  // No double-buzzes
+  //  if (buzzes.indexOf(name) === -1) {
+  //  // Store buzz
+  //    buzzes.push(name);
+  //    // re-broadcast event to other connected sockets
+  //    io.emit('buzz', name);
+  //  }
+  //});
+  //
+  //// Handler for "reset" socket event
+  //socket.on('reset', function() {
+  //  // reset buzzes Array
+  //  buzzes = [];
+  //  // re-broadcast to other connected sockets
+  //  io.emit('reset');
+  //});
 
 });
 

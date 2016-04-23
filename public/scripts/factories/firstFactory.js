@@ -8,9 +8,9 @@ app.factory('gf',[function(){
     var object = {};
     object.id = objects.length;
     object.X_Vel = 0;
-    object.Y_pos = gf.getRandomInt(dimensions.minY, dimensions.maxY);
-    object.X_Vel = 0;
     object.X_pos = gf.getRandomInt(dimensions.minX, dimensions.maxX);
+    object.Y_pos = gf.getRandomInt(dimensions.minY, dimensions.maxY);
+    object.Y_Vel = 0;
     objects.push(object);
     return objects;
   };
