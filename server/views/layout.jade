@@ -5,8 +5,11 @@ html(ng-app="tankio")
     link(rel='stylesheet' href='/lib/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='lib/moment.js')
+    // Defines moment global
     script.
       moment().format()
+    // Defines io global
+    script(src='socket.io/socket.io.js')
     script(src='lib/angular.min.js')
     script(src='lib/angular-route.min.js')
     script(src = '/scripts/appConfig.js')

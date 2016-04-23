@@ -17,10 +17,13 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
   $scope.objects = [];
 
   //new object
-  $scope.objects = gf.object($scope.objects, dimensions);
+  $scope.newPlayer = gf.newPlayer($scope.objects, dimensions);
   player.id = $scope.objects.length - 1;
+  console.log(player.id);
 
-  document.onkeydown = function(event) {
+  socket.emit('newPlayer', $scope.objects);
+
+  document.onkeydown = function(event, $scope.objects.length - 1) {
     if (!event)
       event = window.event;
     var code = event.keyCode;
@@ -42,6 +45,7 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
         player.Y_Vel = -1;
         break;
     }
+    movePlayer(player);
     event.preventDefault();
   };
 
@@ -67,35 +71,36 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
         player.Y_Vel = 0;
         break;
     }
-    event.preventDefault();
   };
 
 // Update Game Object Positions/info
   socket.on('frame', function (objects) {
-    $scope.objects.forEach(function(obj,i){
-      if($scope.objects[i].id === objects[i].id){
-        obj.style = "top:" + objects[i].Y_pos;
-        obj.style = "bottom:" + objects[i].Y_pos;
-      } else {
-        console.log("$scope.id: ",$scope.objects[i].id, "object.id:", objects[i].id)
+    if (objects.length>0) {
+      $scope.objects.forEach(function (obj, i) {
+        if ($scope.objects[i].id === objects[i].id) {
+          obj.style = "top:" + objects[i].Y_pos;
+          obj.style = "bottom:" + objects[i].Y_pos;
+        } else {
+          console.log("$scope.id: ", $scope.objects[i].id, "object.id:", objects[i].id)
+        }
+      });
+      // if there are new objects in the game
+      if (objects.length > $scope.objects.length) {
+        for (var i = 0; i < objects.length - $scope.objects.length; i++) {
+          $scope.objects.push(objects[$scope.objects.length + i]);
+        }
       }
-    });
-    // if there are new objects in the game
-    if(objects.length > $scope.objects.length){
-      for (var i = 0; i < objects.length - $scope.objects.length; i++){
-        $scope.objects.push(objects[$scope.objects.length+ i]);
-      }
-    }
-    //$scope.$apply()
-    console.log("EYY");
+      //$scope.$apply()
+      console.log("EYY");
 
-    // next move for player
-    movePlayer(player.id);
+      // next move for player
+      movePlayer(objects[player.id]);
+    }
   });
 
   function movePlayer(object) {
-    if ("Y: ", object.Y_Vel != 0) {
-      console.log(object.Y_pos);
+    if (object.Y_Vel != 0) {
+      console.log("X: ", object.Y_pos);
       if (object.Y_pos <= dimensions.minY && player.Y_pos >= dimensions.maxY){
         object.Y_pos -= player.Y_Vel * speedMultiplier;
         object.style.top = player.Y_pos + 'px';
