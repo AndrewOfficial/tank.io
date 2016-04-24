@@ -163,20 +163,22 @@ io.on('connection', function(socket) {
 
   socket.on('newPlayer', function(player){
     player.id = objects.length;
-    console.log(player.id);
+    console.log('FIRST', player.id);
     objects.push(player);
     socket.emit('id', player.id)
   });
 
   // Broadcast current state of game objects
   var resetFrame = setInterval(function(){
-    console.log('asdlkfjsldkfjs');
     socket.emit('frame', objects);
-  }, 1000);
+  }, 10);
 
   socket.on('move', function(object){
-    console.log('You have moved');
-    objects.push(object);
+    for (var i in objects){
+      if (objects[i].id == object.id){
+        objects[i] = object;
+      }
+    }
   });
 
   // Handler for "buzz" socket events

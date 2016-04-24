@@ -17,12 +17,15 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
   $scope.objects = [];
 
   //new object
-  var player_object = gf.newPlayer(dimensions);
+  if(!player.id) {
+    var player_object = gf.newPlayer(dimensions);
+  }
 
   socket.emit('newPlayer', player_object);
   socket.on('id', function(id){
-    console.log('ID', id);
-    player.id = id;
+    if(!player.id){
+      player.id = id;
+    }
   });
 
   document.onkeydown = function(event) {
@@ -33,13 +36,13 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
       code = event.charCode;
     switch(code) {
       case 65: // left
-        player.HorVel = -1;
+        player.X_Vel = 1;
         break;
       case 87: //up
         player.Y_Vel = 1;
         break;
       case 68: //right
-        player.HorVel = +1;
+        player.X_Vel = -1;
         break;
       case 83: //down
         player.Y_Vel = -1;
@@ -56,13 +59,13 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
       code = event.charCode;
     switch(code) {
       case 65: // left
-        player.HorVel = 0;
+        player.X_Vel = 0;
         break;
       case 87: //up
         player.Y_Vel = 0;
         break;
       case 68: //right
-        player.HorVel = 0;
+        player.X_Vel = 0;
         break;
       case 83: //down
         player.Y_Vel = 0;
@@ -73,51 +76,36 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
 // Update Game Object Positions/info
   socket.on('frame', function (objects) {
     if (objects.length>0) {
-      $scope.objects.forEach(function (obj, i) {
-        if ($scope.objects[i].id === objects[i].id) {
-          obj.style = "top:" + objects[i].Y_pos;
-          obj.style = "bottom:" + objects[i].Y_pos;
-        } else {
-          console.log("$scope.id: ", $scope.objects[i].id, "object.id:", objects[i].id)
-        }
-      });
-      // if there are new objects in the game
-      if (objects.length > $scope.objects.length) {
-        for (var i = 0; i < objects.length - $scope.objects.length; i++) {
-          $scope.objects.push(objects[$scope.objects.length + i]);
-        }
-      }
-      //$scope.$apply()
-      console.log("EYY");
-
+      $scope.objects = objects;
+      $scope.$apply();
       // next move for player
       movePlayer(objects[player.id]);
     }
   });
 
   function movePlayer(object) {
-    if (object.Y_Vel != 0) {
-      console.log("X: ", object.Y_pos);
-      if (object.Y_pos <= dimensions.minY && player.Y_pos >= dimensions.maxY){
+    if (player.Y_Vel != undefined) {
+      if (object.Y_pos > dimensions.minY && object.Y_pos < dimensions.maxY){
+        console.log("AYYYY",player.Y_Vel);
         object.Y_pos -= player.Y_Vel * speedMultiplier;
-        object.style.top = player.Y_pos + 'px';
-      } else if (object.Y_pos > dimensions.minY){
+      } else if (object.Y_pos <= dimensions.minY){
         object.Y_pos = dimensions.minY;
-      } else if (object.Y_pos < dimensions.maxY){
+      } else if (object.Y_pos >= dimensions.maxY){
         object.Y_pos = dimensions.maxY;
       }
     }
-    if (object.X_Vel != 0) {
-      console.log("X: ", object.X_pos);
-      if (object.X_pos <= dimensions.minX && player.X_pos >= dimensions.maxX){
+    if (player.X_Vel != undefined) {
+      if (object.X_pos > dimensions.minX && object.X_pos < dimensions.maxX){
+        console.log("object.X_pos", object.X_pos);
         object.X_pos -= player.X_Vel * speedMultiplier;
-        object.style.top = player.X_pos + 'px';
-      } else if (object.X_pos > dimensions.minX){
+      } else if (object.X_pos <= dimensions.minX){
         object.X_pos = dimensions.minX;
-      } else if (object.X_pos < dimensions.maxX){
+      } else if (object.X_pos >= dimensions.maxX){
         object.X_pos = dimensions.maxX;
       }
     }
+
+    object.style = {'left' : object.X_pos + 'px','top' : object.Y_pos + 'px'};
     socket.emit('move', object);
   }
 }]);

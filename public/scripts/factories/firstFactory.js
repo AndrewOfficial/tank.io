@@ -11,6 +11,7 @@ app.factory('gf',[function(){
     object.X_pos = gf.getRandomInt(dimensions.minX, dimensions.maxX);
     object.Y_pos = gf.getRandomInt(dimensions.minY, dimensions.maxY);
     object.Y_Vel = 0;
+    object.style = {'left' : object.X_pos + 'px','top' : object.Y_pos + 'px'};
     return object;
   };
 
