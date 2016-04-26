@@ -4,29 +4,38 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
   var socket = io();
 
   // local variables
-    var speedMultiplier = 2,
-    dimensions = {},
-    player = {};
-
-  dimensions.minY = 150;
-  dimensions.maxY = 450;
-  dimensions.minX = 150;
-  dimensions.maxX = 600;
+  var player = {};
+  var c = {};
+  var coordinates = {};
 
   // $scope variables
   $scope.objects = [];
 
-  //new object
-  if(!player.id) {
-    var player_object = gf.newPlayer(dimensions);
-  }
+  // get playingField;
+  var field = document.getElementById("playingField");
 
-  socket.emit('newPlayer', player_object);
+  // get constants
+  socket.emit('onStart');
+  socket.on('constants', function(constants){
+    //new object
+    if(!player.id) {
+      var player_object = gf.newPlayer(constants);
+    }
+    socket.emit('newPlayer', player_object);
+
+  });
+
   socket.on('id', function(id){
     if(!player.id){
       player.id = id;
+      console.log("PLAYER ID", player.id);
     }
   });
+
+  //field.mouseMove(function(e) {
+  //  document.Form1.posx.value = e.pageX;
+  //  document.Form1.posx.value = e.pageY;
+  //});
 
   document.onkeydown = function(event) {
     if (!event)
@@ -73,39 +82,51 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
     }
   };
 
+  document.onclick = function(event){
+    gf.newProjectile($scope.objects[player.id], coordinates, c);
+  };
+
+  (function() {
+    document.onmousemove = handleMouseMove;
+    function handleMouseMove(event) {
+      var dot, eventDoc, doc, body, pageX, pageY;
+
+      event = event || window.event; // IE-ism
+
+      // If pageX/Y aren't available and clientX/Y are,
+      // calculate pageX/Y - logic taken from jQuery.
+      // (This is to support old IE)
+      if (event.pageX == null && event.clientX != null) {
+        eventDoc = (event.target && event.target.ownerDocument) || document;
+        doc = eventDoc.documentElement;
+        body = eventDoc.body;
+
+        event.pageX = event.clientX +
+          (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
+          (doc && doc.clientLeft || body && body.clientLeft || 0);
+        event.pageY = event.clientY +
+          (doc && doc.scrollTop  || body && body.scrollTop  || 0) -
+          (doc && doc.clientTop  || body && body.clientTop  || 0 );
+      }
+
+      // Use event.pageX / event.pageY here
+      coordinates.x = event.pageX;
+      coordinates.y = event.pageY
+
+    }
+  })();
+
 // Update Game Object Positions/info
   socket.on('frame', function (objects) {
     if (objects.length>0) {
       $scope.objects = objects;
       $scope.$apply();
       // next move for player
-      movePlayer(objects[player.id]);
+      if(player.id != undefined){
+        socket.emit('movePlayer', player);
+      } else {
+        console.log('player did not move');
+      }
     }
   });
-
-  function movePlayer(object) {
-    if (player.Y_Vel != undefined) {
-      if (object.Y_pos > dimensions.minY && object.Y_pos < dimensions.maxY){
-        console.log("AYYYY",player.Y_Vel);
-        object.Y_pos -= player.Y_Vel * speedMultiplier;
-      } else if (object.Y_pos <= dimensions.minY){
-        object.Y_pos = dimensions.minY;
-      } else if (object.Y_pos >= dimensions.maxY){
-        object.Y_pos = dimensions.maxY;
-      }
-    }
-    if (player.X_Vel != undefined) {
-      if (object.X_pos > dimensions.minX && object.X_pos < dimensions.maxX){
-        console.log("object.X_pos", object.X_pos);
-        object.X_pos -= player.X_Vel * speedMultiplier;
-      } else if (object.X_pos <= dimensions.minX){
-        object.X_pos = dimensions.minX;
-      } else if (object.X_pos >= dimensions.maxX){
-        object.X_pos = dimensions.maxX;
-      }
-    }
-
-    object.style = {'left' : object.X_pos + 'px','top' : object.Y_pos + 'px'};
-    socket.emit('move', object);
-  }
 }]);

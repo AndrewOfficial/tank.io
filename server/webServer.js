@@ -17,7 +17,8 @@ var socketIo = require('socket.io');
 // Local dependencies
 var indexRouter = require('./routes/index');
 var apiRoutes = require('./apiRoutes/index');
-
+var c = require('./Constants');
+console.log("SERVER CONSTANTS", c);
 /**
  * Module variables
  */
@@ -161,6 +162,9 @@ function start(done) {
 io.on('connection', function(socket) {
   console.log('Connected socket.io client ' + socket.id);
 
+  socket.on('onStart', function(){
+    socket.emit('constants',c);
+  });
   socket.on('newPlayer', function(player){
     player.id = objects.length;
     console.log('FIRST', player.id);
@@ -173,32 +177,33 @@ io.on('connection', function(socket) {
     socket.emit('frame', objects);
   }, 10);
 
-  socket.on('move', function(object){
-    for (var i in objects){
-      if (objects[i].id == object.id){
-        objects[i] = object;
+  socket.on('movePlayer', function(player){
+    var object = objects[player.id];
+    var xyMaxBarrier = c.dimensions.maxX - object.width;
+    var yMaxBarrier = c.dimensions.maxY - object.width;
+    if (player.Y_Vel != undefined) {
+      if (object.Y_pos >= c.dimensions.minY && object.Y_pos <= yMaxBarrier){
+        object.Y_pos -= player.Y_Vel * c.speedMultiplier;
+      } else if (object.Y_pos < c.dimensions.minY){
+        object.Y_pos = c.dimensions.minY;
+      } else if (object.Y_pos > yMaxBarrier){
+        object.Y_pos = yMaxBarrier;
       }
     }
-  });
+    if (player.X_Vel != undefined) {
+      if (object.X_pos >= c.dimensions.minX && object.X_pos <= xyMaxBarrier){
+        object.X_pos -= player.X_Vel * c.speedMultiplier;
+      } else if (object.X_pos < c.dimensions.minX){
+        object.X_pos = c.dimensions.minX;
+      } else if (object.X_pos > xyMaxBarrier){
+        object.X_pos = xyMaxBarrier;
+      }
+    }
+    object.style = {'left' : object.X_pos + 'px','top' : object.Y_pos + 'px','width' : object.width + 'px', 'height' : object.width + 'px'};
 
-  // Handler for "buzz" socket events
-  //socket.on('buzz', function (name) {
-  //  // No double-buzzes
-  //  if (buzzes.indexOf(name) === -1) {
-  //  // Store buzz
-  //    buzzes.push(name);
-  //    // re-broadcast event to other connected sockets
-  //    io.emit('buzz', name);
-  //  }
-  //});
-  //
-  //// Handler for "reset" socket event
-  //socket.on('reset', function() {
-  //  // reset buzzes Array
-  //  buzzes = [];
-  //  // re-broadcast to other connected sockets
-  //  io.emit('reset');
-  //});
+    objects[player.id] = object;
+    console.log('object', object);
+  });
 
 });
 

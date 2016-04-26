@@ -2,10 +2,12 @@
 
 var async = require('async');
 var router = require('express').Router();
+var constants = require('../Constants');
 
 
-router.get('/', function (req, res, next) {
-
+router.get('/constants', function (req, res, next) {
+  console.log("CONSTANTS", constants);
+  res.send(constants)
 });
 
 router.post('/', function (req, res, next) {
