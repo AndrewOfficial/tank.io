@@ -1,3 +1,4 @@
 <h2>THE GAME</h2>
 <div id="playingField" class="playingField" onmousemove=""></div>
-<div class="player" ng-repeat="object in objects track by $index" ng-style="object.style"><span>{{object.username}}</span></div>
+<div class="player" ng-repeat="player in objects.players track by $index" ng-style="player.style"><span>{{player.username}}</span></div>
+<div class="projectile" ng-repeat="projectile in objects.projectiles track by $index" ng-style="projectile.style"><span>{{$index}}</span></div>

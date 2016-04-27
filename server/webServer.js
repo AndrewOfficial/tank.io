@@ -18,7 +18,7 @@ var socketIo = require('socket.io');
 var indexRouter = require('./routes/index');
 var apiRoutes = require('./apiRoutes/index');
 var c = require('./Constants');
-console.log("SERVER CONSTANTS", c);
+var objects = require('./modules/objectLibrary');
 /**
  * Module variables
  */
@@ -28,8 +28,6 @@ var io = socketIo(server);
 var libs = [];
 var topDir = path.join(__dirname, '..');
 var port = process.env.PORT || 3000;
-
-var objects = [];
 
 /**
  * Configure the express app
@@ -165,22 +163,31 @@ io.on('connection', function(socket) {
   socket.on('onStart', function(){
     socket.emit('constants',c);
   });
+
   socket.on('newPlayer', function(player){
-    player.id = objects.length;
+    player.id = objects.players.length;
     console.log('FIRST', player.id);
-    objects.push(player);
+    objects.players.push(player);
     socket.emit('id', player.id)
+  });
+
+  socket.on('newProjectile', function(projectile){
+    objects.projectiles.push(projectile);
   });
 
   // Broadcast current state of game objects
   var resetFrame = setInterval(function(){
+    objects.projectiles = objects.updateProjectiles(objects.projectiles);
     socket.emit('frame', objects);
   }, 10);
 
   socket.on('movePlayer', function(player){
-    var object = objects[player.id];
+    var object = objects.players[player.id];
     var xyMaxBarrier = c.dimensions.maxX - object.width;
     var yMaxBarrier = c.dimensions.maxY - object.width;
+
+    objects.players[player.id].id = player.id;
+
     if (player.Y_Vel != undefined) {
       if (object.Y_pos >= c.dimensions.minY && object.Y_pos <= yMaxBarrier){
         object.Y_pos -= player.Y_Vel * c.speedMultiplier;
@@ -201,8 +208,7 @@ io.on('connection', function(socket) {
     }
     object.style = {'left' : object.X_pos + 'px','top' : object.Y_pos + 'px','width' : object.width + 'px', 'height' : object.width + 'px'};
 
-    objects[player.id] = object;
-    console.log('object', object);
+    objects.players[player.id] = object;
   });
 
 });

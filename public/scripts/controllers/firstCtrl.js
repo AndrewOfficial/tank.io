@@ -6,7 +6,10 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
   // local variables
   var player = {};
   var c = {};
-  var coordinates = {};
+  var coordinates = {
+    x: 0,
+    y: 0
+  };
 
   // $scope variables
   $scope.objects = [];
@@ -61,8 +64,9 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
   };
 
   document.onkeyup = function(event) {
-    if (!event)
+    if (!event) {
       event = window.event;
+    }
     var code = event.keyCode;
     if (event.charCode && code == 0)
       code = event.charCode;
@@ -83,7 +87,10 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
   };
 
   document.onclick = function(event){
-    gf.newProjectile($scope.objects[player.id], coordinates, c);
+    if (player.id != undefined){
+      var newProjectile = gf.newProjectile($scope.objects.players[player.id], coordinates, c);
+      socket.emit('newProjectile', newProjectile);
+    }
   };
 
   (function() {
@@ -118,8 +125,8 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
 
 // Update Game Object Positions/info
   socket.on('frame', function (objects) {
-    if (objects.length>0) {
-      $scope.objects = objects;
+      $scope.objects.players = objects.players;
+      $scope.objects.projectiles = objects.projectiles;
       $scope.$apply();
       // next move for player
       if(player.id != undefined){
@@ -127,6 +134,5 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
       } else {
         console.log('player did not move');
       }
-    }
   });
 }]);

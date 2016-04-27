@@ -17,13 +17,19 @@ app.factory('gf', [function(){
   };
 
   gf.newProjectile = function(player, coordinates, c){
+    console.log(player);
     var projectile = {};
+    projectile.coordinates = {};
+
+    projectile.shooter = player.id;
     projectile.width = c.projectileWidth;
+    projectile.X_origin = player.X_pos + (player.width/2);
+    projectile.Y_origin = player.Y_pos + (player.width/2);
     projectile.X_pos = player.X_pos + (player.width/2);
     projectile.Y_pos = player.Y_pos + (player.width/2);
+    projectile.coordinates.x = coordinates.x;
+    projectile.coordinates.y = coordinates.y;
 
-    projectile.X_Vel = 2;
-    projectile.Y_Vel = 2;
     return projectile;
   };
 
