@@ -182,34 +182,36 @@ io.on('connection', function(socket) {
   }, 10);
 
   socket.on('movePlayer', function(player){
-    var object = objects.players[player.id];
-    var xyMaxBarrier = c.dimensions.maxX - object.width;
-    var yMaxBarrier = c.dimensions.maxY - object.width;
+    if(objects.players.length > 0){
+      var object = objects.players[player.id];
+      var xyMaxBarrier = c.dimensions.maxX - object.width;
+      var yMaxBarrier = c.dimensions.maxY - object.width;
 
-    objects.players[player.id].id = player.id;
+      objects.players[player.id].id = player.id;
 
-    if (player.Y_Vel != undefined) {
-      if (object.Y_pos >= c.dimensions.minY && object.Y_pos <= yMaxBarrier){
-        object.Y_pos -= player.Y_Vel * c.speedMultiplier;
-      } else if (object.Y_pos < c.dimensions.minY){
-        object.Y_pos = c.dimensions.minY;
-      } else if (object.Y_pos > yMaxBarrier){
-        object.Y_pos = yMaxBarrier;
+      if (player.Y_Vel != undefined) {
+        if (object.Y_pos >= c.dimensions.minY && object.Y_pos <= yMaxBarrier){
+          object.Y_pos -= player.Y_Vel * c.speedMultiplier;
+        } else if (object.Y_pos < c.dimensions.minY){
+          object.Y_pos = c.dimensions.minY;
+        } else if (object.Y_pos > yMaxBarrier){
+          object.Y_pos = yMaxBarrier;
+        }
       }
-    }
-    if (player.X_Vel != undefined) {
-      if (object.X_pos >= c.dimensions.minX && object.X_pos <= xyMaxBarrier){
-        object.X_pos -= player.X_Vel * c.speedMultiplier;
-      } else if (object.X_pos < c.dimensions.minX){
-        object.X_pos = c.dimensions.minX;
-      } else if (object.X_pos > xyMaxBarrier){
-        object.X_pos = xyMaxBarrier;
+      if (player.X_Vel != undefined) {
+        if (object.X_pos >= c.dimensions.minX && object.X_pos <= xyMaxBarrier){
+          object.X_pos -= player.X_Vel * c.speedMultiplier;
+        } else if (object.X_pos < c.dimensions.minX){
+          object.X_pos = c.dimensions.minX;
+        } else if (object.X_pos > xyMaxBarrier){
+          object.X_pos = xyMaxBarrier;
+        }
       }
-    }
-    object.style = {'left' : object.X_pos + 'px','top' : object.Y_pos + 'px','width' : object.width + 'px', 'height' : object.width + 'px'};
+      object.style = {'left' : object.X_pos + 'px','top' : object.Y_pos + 'px','width' : object.width + 'px', 'height' : object.width + 'px'};
 
-    objects.players[player.id] = object;
-  });
+      objects.players[player.id] = object;
+    }
+  })
 
 });
 
