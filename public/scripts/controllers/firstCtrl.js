@@ -12,6 +12,7 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
   };
 
   // $scope variables
+  //var gameObjects = [];
   $scope.objects = [];
 
   // get playingField;
@@ -124,6 +125,11 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
 
 // Update Game Object Positions/info
   socket.on('frame', function (objects) {
+    //for (var i in objects.players){
+    //  if ( gameObjects.players.indexOf(i) == -1) {
+    //    var newPlayer = document.createElement('div');
+    //  }
+    //}
       $scope.objects.players = objects.players;
       $scope.objects.projectiles = objects.projectiles;
       $scope.$apply();

@@ -178,7 +178,7 @@ io.on('connection', function(socket) {
   var resetFrame = setInterval(function(){
     objects.projectiles = objects.updateProjectiles(objects.projectiles);
     socket.emit('frame', objects);
-  }, 10);
+  }, 30);
 
   socket.on('movePlayer', function(player){
     if(objects.players.length > 0){
