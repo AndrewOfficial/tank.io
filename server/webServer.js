@@ -18,7 +18,7 @@ var socketIo = require('socket.io');
 var indexRouter = require('./routes/index');
 var apiRoutes = require('./apiRoutes/index');
 var c = require('./Constants');
-var objects = require('./modules/objectLibrary.js');
+var objects = require('./objects/objectLibrary.js');
 /**
  * Module variables
  */
@@ -152,7 +152,6 @@ function start(done) {
   //}
   server.listen(port, done);
 }
-
 
 /*
  Attach "connection" event handler to socket.io server
