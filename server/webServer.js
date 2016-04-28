@@ -18,7 +18,7 @@ var socketIo = require('socket.io');
 var indexRouter = require('./routes/index');
 var apiRoutes = require('./apiRoutes/index');
 var c = require('./Constants');
-var objects = require('./modules/objectLibrary');
+var objects = require('./modules/objectLibrary.js');
 /**
  * Module variables
  */
