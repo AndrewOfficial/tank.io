@@ -1,5 +1,5 @@
 'use strict';
 
-var WebServer = require('./WebServer');
+var WebServer = require('./webServer.js');
 
 WebServer.start();
