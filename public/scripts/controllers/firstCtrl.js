@@ -31,7 +31,6 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
   socket.on('id', function(id){
     if(!player.id){
       player.id = id;
-      console.log("PLAYER ID", player.id);
     }
   });
 
@@ -132,7 +131,6 @@ app.controller('firstCtrl', ['$scope', 'gf', function ($scope, gf){
       if(player.id != undefined){
         socket.emit('movePlayer', player);
       } else {
-        console.log('player did not move');
       }
   });
 }]);

@@ -5,7 +5,6 @@ module.exports = {
   updateProjectiles: function(projectiles){
     for (var i in projectiles){
       if(projectiles[i].progress == undefined){
-        console.log(projectiles[i]);
         projectiles[i].progress = 0;
         var X_OriginalDistance = projectiles[i].coordinates.x - projectiles[i].X_origin;
         var Y_OriginalDistance = projectiles[i].coordinates.y - projectiles[i].Y_origin;
