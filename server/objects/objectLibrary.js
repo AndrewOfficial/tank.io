@@ -15,7 +15,7 @@ module.exports = {
       } else if (projectiles[i].progress == 300){
         projectiles.splice(i, 1);
       } else {
-        projectiles[i].progress = projectiles[i].progress + c.speedMultiplier/2;
+        projectiles[i].progress = projectiles[i].progress + c.speedMultiplier;
         projectiles[i].X_pos = projectiles[i].X_origin + projectiles[i].x_distance * projectiles[i].progress/300;
         projectiles[i].Y_pos = projectiles[i].Y_origin + projectiles[i].y_distance * projectiles[i].progress/300;
         projectiles[i].style = {'left' : projectiles[i].X_pos + 'px','top' : projectiles[i].Y_pos + 'px','width' : projectiles[i].width + 'px', 'height' : projectiles[i].width + 'px'};
