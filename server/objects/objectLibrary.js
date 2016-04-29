@@ -25,7 +25,7 @@ module.exports = {
       } else if (projectiles[i].progress == 300){
         projectiles[i].alive = false;
       }  else if (projectiles[i].alive == false){
-        projectiles.slice(i,0);
+        projectiles.slice(i,1);
       } else {
         projectiles[i].progress = projectiles[i].progress + C.speedMultiplier;
         projectiles[i].X_pos = projectiles[i].X_origin + projectiles[i].x_distance * projectiles[i].progress/300;

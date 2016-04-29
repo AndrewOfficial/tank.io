@@ -7,10 +7,13 @@ var coordinates = {
   x: 0,
   y: 0
 };
+var fireRate = 5;
+var fireNumber = 0;
 var objectsServer = {};
 var objectsClient = {};
 objectsClient.players = [];
 objectsClient.projectiles = [];
+
 socket.on('id', function(id){
   if(!playerFrame.id){
     playerFrame.id = id;
@@ -88,16 +91,6 @@ function create() {
     }
   };
 
-  document.onclick = function(event){
-    if (playerFrame.id != undefined){
-      coordinates.x = game.input.mousePointer.x;
-      coordinates.y = game.input.mousePointer.y;
-
-      var newProjectile = objectsLibrary.newProjectile(objectsServer.players[playerFrame.id], coordinates);
-      socket.emit('newProjectile', newProjectile);
-    }
-  };
-
   (function() {
 
     document.onmousemove = handleMouseMove;
@@ -132,6 +125,7 @@ function create() {
 // Update Game Object Positions/info
   socket.on('frame', function (frameObject) {
     if(playerFrame.id != undefined) {
+      fireNumber++;
       // update players
       for (var i in frameObject.players) {
         if (objectsServer.players[i] == undefined) {
@@ -161,8 +155,16 @@ function create() {
         }
       }
 
-      // next move for player
-      socket.emit('movePlayer', playerFrame);
+      if (game.input.activePointer.isDown && fireNumber > fireRate) {
+        fireNumber = 0;
+        coordinates.x = game.input.mousePointer.x;
+        coordinates.y = game.input.mousePointer.y;
+        var newProjectile = objectsLibrary.newProjectile(objectsServer.players[playerFrame.id], coordinates);
+        socket.emit('move', playerFrame, newProjectile);
+      } else {
+        // next move for player
+        socket.emit('move', playerFrame);
+      }
     }
   });
 }

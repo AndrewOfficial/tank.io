@@ -180,7 +180,11 @@ io.on('connection', function(socket) {
     socket.emit('frame', objects);
   }, 30);
 
-  socket.on('movePlayer', function(player){
+  socket.on('move', function(player, newProjectile){
+    if (newProjectile != undefined){
+      objects.projectiles.push(newProjectile);
+    }
+
     if(objects.players.length > 0){
       var object = objects.players[player.id];
       var xyMaxBarrier = c.dimensions.maxX - object.width;
