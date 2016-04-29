@@ -10,10 +10,8 @@ html(ng-app="tankio")
       moment().format()
     // Defines io global
     script(src='socket.io/socket.io.js')
-    script(src='lib/angular.min.js')
-    script(src='lib/angular-route.min.js')
-    script(src = '/scripts/appConfig.js')
-    script(src='/scripts/factories/firstFactory.js')
-    script(src='/scripts/controllers/firstCtrl.js')
+    script(src='lib/phaser.js')
+    script(src='/scripts/objectLib/general.js')
+    script(src='/scripts/game/game.js')
   body
     block content

@@ -66,8 +66,7 @@ function addLib(relativePath) {
   });
 }
 
-addLib('angular/angular.min.js');
-addLib('angular-route/angular-route.min.js');
+addLib('phaser/build/phaser.js');
 addLib('moment/moment.js');
 
 app.use("/lib/bootstrap/", express.static(path.join(topDir, 'node_modules','bootstrap','dist')));
@@ -160,7 +159,8 @@ io.on('connection', function(socket) {
   console.log('Connected socket.io client ' + socket.id);
 
   socket.on('onStart', function(){
-    socket.emit('constants',c);
+    objects.players.push(objects.newPlayer());
+    socket.emit('linkStart',objects,c);
   });
 
   socket.on('newPlayer', function(player){

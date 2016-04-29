@@ -1,7 +1,17 @@
-var c = require('../Constants');
+var C = require('../Constants');
 module.exports = {
   players: [],
   projectiles: [],
+  newPlayer : function () {
+    console.log();
+    var object = {};
+    object.width = C.startingWidth;
+    object.X_pos = this.getRandomInt(C.dimensions.minX, C.dimensions.maxX);
+    object.Y_pos = this.getRandomInt(C.dimensions.minY, C.dimensions.maxY) - object.width;
+    object.X_Vel = 0;
+    object.Y_Vel = 0;
+    return object;
+  },
   updateProjectiles: function(projectiles){
     for (var i in projectiles){
       if(projectiles[i].progress == undefined){
@@ -13,14 +23,19 @@ module.exports = {
         projectiles[i].y_distance = Y_OriginalDistance * (600/hypotenuse);
         //console.log('x_distance: ', projectiles[i].x_distance, 'y_distance: ', projectiles[i].y_distance);
       } else if (projectiles[i].progress == 300){
-        projectiles.splice(i, 1);
+        projectiles[i].alive = false;
+      }  else if (projectiles[i].alive == false){
+        projectiles.slice(i,0);
       } else {
-        projectiles[i].progress = projectiles[i].progress + c.speedMultiplier;
+        projectiles[i].progress = projectiles[i].progress + C.speedMultiplier;
         projectiles[i].X_pos = projectiles[i].X_origin + projectiles[i].x_distance * projectiles[i].progress/300;
         projectiles[i].Y_pos = projectiles[i].Y_origin + projectiles[i].y_distance * projectiles[i].progress/300;
         projectiles[i].style = {'left' : projectiles[i].X_pos + 'px','top' : projectiles[i].Y_pos + 'px','width' : projectiles[i].width + 'px', 'height' : projectiles[i].width + 'px'};
       }
     }
     return projectiles;
+  },
+  getRandomInt : function (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 };
