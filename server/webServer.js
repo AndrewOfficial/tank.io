@@ -177,14 +177,16 @@ io.on('connection', function(socket) {
   // Broadcast current state of game objects
   var resetFrame = setInterval(function(){
     objects.projectiles = objects.updateProjectiles(objects.projectiles);
-    socket.emit('frame', objects);
-  }, 30);
+    var string = JSON.stringify(objects);
+    socket.emit('frame', string);
+  }, 10);
 
   socket.on('move', function(player, newProjectile){
     if (newProjectile != undefined){
+      newProjectile = JSON.parse(newProjectile);
       objects.projectiles.push(newProjectile);
     }
-
+    player = JSON.parse(player);
     if(objects.players.length > 0){
       var object = objects.players[player.id];
       var xyMaxBarrier = c.dimensions.maxX - object.width;

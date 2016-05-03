@@ -124,6 +124,7 @@ function create() {
 
 // Update Game Object Positions/info
   socket.on('frame', function (frameObject) {
+    frameObject = JSON.parse(frameObject);
     if(playerFrame.id != undefined) {
       fireNumber++;
       // update players
@@ -160,10 +161,10 @@ function create() {
         coordinates.x = game.input.mousePointer.x;
         coordinates.y = game.input.mousePointer.y;
         var newProjectile = objectsLibrary.newProjectile(objectsServer.players[playerFrame.id], coordinates);
-        socket.emit('move', playerFrame, newProjectile);
+        socket.emit('move', JSON.stringify(playerFrame), JSON.stringify(newProjectile));
       } else {
         // next move for player
-        socket.emit('move', playerFrame);
+        socket.emit('move', JSON.stringify(playerFrame));
       }
     }
   });
