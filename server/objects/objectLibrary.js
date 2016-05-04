@@ -23,7 +23,7 @@ module.exports = {
         projectiles[i].x_distance = X_OriginalDistance * (600/hypotenuse);
         projectiles[i].y_distance = Y_OriginalDistance * (600/hypotenuse);
         //console.log('x_distance: ', projectiles[i].x_distance, 'y_distance: ', projectiles[i].y_distance);
-      } else if (projectiles[i].progress > 300){
+      } else if (projectiles[i].progress >= 300){
         projectiles.splice(0, 1);
         projectileList.removeNumber++;
       } else {

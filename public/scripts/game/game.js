@@ -10,7 +10,7 @@ var coordinates = {
 var fireRate = 5;
 var fireNumber = 0;
 var objectsServer = {};
-
+var removeNumber = 0;
 var objectsClient = {};
 objectsClient.players = [];
 objectsClient.projectiles = [];
@@ -129,7 +129,6 @@ function create() {
 // Update Game Object Positions/info
   socket.on('frame', function (frameObject) {
     frameObject = JSON.parse(frameObject);
-
     if (logger> 600){
       console.log(frameObject);
       logger = 0;
@@ -150,13 +149,15 @@ function create() {
         }
       }
       //update projectiles
-      if (frameObject.projectileList.removeNumber > 0){
-        for (var i = 0; i<frameObject.projectileList.removeNumber; i++) {
+      console.log(frameObject.projectileList.removeNumber);
+      removeNumber += frameObject.projectileList.removeNumber;
+      if (removeNumber > 0){
+        for (var i = 0; i<removeNumber; i++) {
           var x = objectsClient.projectiles.shift();
           x.destroy();
           objectsServer.projectiles.splice(0,1);
+          removeNumber -= 1;
         }
-        frameObject.projectileList.removeNumber=0;
       }
 
       for (var i = 0; i < frameObject.projectileList.projectiles.length; i++) {
@@ -165,7 +166,6 @@ function create() {
             objectsServer.projectiles.push(frameObject.projectileList.projectiles[i]);
             var projectile = game.add.sprite(frameObject.projectileList.projectiles[i].X_pos, frameObject.projectileList.projectiles[i].Y_pos, 'red_circle_small');
             objectsClient.projectiles.push(projectile);
-            console.log(objectsClient.projectiles.length);
           }
         } else {
           objectsClient.projectiles[i].x = frameObject.projectileList.projectiles[i].X_pos;
