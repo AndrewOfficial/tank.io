@@ -1,7 +1,7 @@
 var C = require('../Constants');
 module.exports = {
   players: [],
-  projectiles: [],
+  projectileList: {projectiles: [], removeNumber: 0},
   newPlayer : function () {
     console.log();
     var object = {};
@@ -12,7 +12,8 @@ module.exports = {
     object.Y_Vel = 0;
     return object;
   },
-  updateProjectiles: function(projectiles){
+  updateProjectiles: function(projectileList){
+  var projectiles = projectileList.projectiles;
     for (var i in projectiles){
       if(projectiles[i].progress == undefined){
         projectiles[i].progress = 0;
@@ -22,10 +23,9 @@ module.exports = {
         projectiles[i].x_distance = X_OriginalDistance * (600/hypotenuse);
         projectiles[i].y_distance = Y_OriginalDistance * (600/hypotenuse);
         //console.log('x_distance: ', projectiles[i].x_distance, 'y_distance: ', projectiles[i].y_distance);
-      } else if (projectiles[i].progress == 300){
-        projectiles[i].alive = false;
-      }  else if (projectiles[i].alive == false){
-        projectiles.slice(i,1);
+      } else if (projectiles[i].progress > 300){
+        projectiles.splice(0, 1);
+        projectileList.removeNumber++;
       } else {
         projectiles[i].progress = projectiles[i].progress + C.speedMultiplier;
         projectiles[i].X_pos = projectiles[i].X_origin + projectiles[i].x_distance * projectiles[i].progress/300;
@@ -33,7 +33,9 @@ module.exports = {
         projectiles[i].style = {'left' : projectiles[i].X_pos + 'px','top' : projectiles[i].Y_pos + 'px','width' : projectiles[i].width + 'px', 'height' : projectiles[i].width + 'px'};
       }
     }
-    return projectiles;
+    projectileList.projectiles = projectiles;
+
+    return projectileList;
   },
   getRandomInt : function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;

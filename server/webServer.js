@@ -171,23 +171,28 @@ io.on('connection', function(socket) {
   });
 
   socket.on('newProjectile', function(projectile){
-    objects.projectiles.push(projectile);
+    objects.projectileList.projectiles.push(projectile);
   });
 
   // Broadcast current state of game objects
   var resetFrame = setInterval(function(){
-    objects.projectiles = objects.updateProjectiles(objects.projectiles);
-    var string = JSON.stringify(objects);
+    objects.updateProjectiles(objects.projectileList);
+    var pack = {players: objects.players};
+    pack.projectileList = objects.projectileList;
+
+    var string = JSON.stringify(pack);
     socket.emit('frame', string);
-  }, 10);
+
+    objects.projectileList.removeNumber = 0;
+  }, 20);
 
   socket.on('move', function(player, newProjectile){
     if (newProjectile != undefined){
       newProjectile = JSON.parse(newProjectile);
-      objects.projectiles.push(newProjectile);
+      objects.projectileList.projectiles.push(newProjectile);
     }
     player = JSON.parse(player);
-    if(objects.players.length > 0){
+    if(objects.players.length > 0 && player.id != undefined){
       var object = objects.players[player.id];
       var xyMaxBarrier = c.dimensions.maxX - object.width;
       var yMaxBarrier = c.dimensions.maxY - object.width;
