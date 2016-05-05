@@ -152,6 +152,18 @@ function start(done) {
   server.listen(port, done);
 }
 
+// Broadcast current state of game objects
+var resetFrame = setInterval(function(){
+  objects.updateProjectiles(objects.projectileList);
+  var pack = {players: objects.players};
+  pack.projectileList = objects.projectileList;
+
+  var string = JSON.stringify(pack);
+  io.sockets.emit('frame', string);
+
+  objects.projectileList.removeNumber = 0;
+}, 20);
+
 /*
  Attach "connection" event handler to socket.io server
  */
@@ -169,22 +181,6 @@ io.on('connection', function(socket) {
     objects.players.push(player);
     socket.emit('id', player.id)
   });
-
-  socket.on('newProjectile', function(projectile){
-    objects.projectileList.projectiles.push(projectile);
-  });
-
-  // Broadcast current state of game objects
-  var resetFrame = setInterval(function(){
-    objects.updateProjectiles(objects.projectileList);
-    var pack = {players: objects.players};
-    pack.projectileList = objects.projectileList;
-
-    var string = JSON.stringify(pack);
-    socket.emit('frame', string);
-
-    objects.projectileList.removeNumber = 0;
-  }, 20);
 
   socket.on('move', function(player, newProjectile){
     if (newProjectile != undefined){

@@ -20,12 +20,6 @@ objectsClient.projectiles = [];
 
 var logger = 0;
 
-socket.on('id', function(id){
-  if(!playerFrame.id){
-    playerFrame.id = id;
-  }
-});
-
 function preload() {
   game.load.image('red_circle_medium', '/images/red_circle_medium.png');
   game.load.image('red_circle_small', '/images/red_circle_small.png');
@@ -118,14 +112,19 @@ function create() {
 
   socket.on('frame', function (pack) {
     frameObject = JSON.parse(pack);
+
   });
 
   // send move every 20 ms
   var move = setInterval(function(){
     if (game.input.activePointer.isDown && fireNumber > fireRate) {
       fireNumber = 0;
-      coordinates.x = game.input.mousePointer.x;
-      coordinates.y = game.input.mousePointer.y;
+      if (game.input.mousePointer.x){
+        coordinates.x = game.input.mousePointer.x;
+      }
+      if (game.input.mousePointer.y) {
+        coordinates.y = game.input.mousePointer.y;
+      }
       var newProjectile = objectsLibrary.newProjectile(objectsServer.players[playerFrame.id], coordinates);
       socket.emit('move', JSON.stringify(playerFrame), JSON.stringify(newProjectile));
 
@@ -133,12 +132,15 @@ function create() {
       // next move for player
       socket.emit('move', JSON.stringify(playerFrame));
     }
-    updateGame();
   }, 20);
 
 // Update Game Object Positions/info
   socket.on('frame', function (frameObject) {
     frameObject = JSON.parse(frameObject);
+    if (frameObject.projectileList.removeNumber > 0){
+      console.log(frameObject.projectileList.removeNumber);
+    }
+    updateGame();
     if (logger> 600){
       console.log(frameObject);
       logger = 0;
@@ -149,7 +151,7 @@ function create() {
     fireNumber++;
     // update players
     for (var i in frameObject.players) {
-      if (objectsServer.players[i] === undefined) {
+      if (objectsClient.players[i] === undefined) {
         console.log("SLDKFJSLKDJFlSD");
         objectsServer.players[i] = frameObject.players[i];
         var player = game.add.sprite(frameObject.players[i].X_pos, frameObject.players[i].Y_pos, 'red_circle_medium');
@@ -161,7 +163,6 @@ function create() {
       }
     }
     //update projectiles
-    console.log(frameObject.projectileList.removeNumber);
     removeNumber += frameObject.projectileList.removeNumber;
     if (removeNumber > 0){
       for (var i = 0; i<removeNumber; i++) {
@@ -169,16 +170,15 @@ function create() {
         x.destroy();
         objectsServer.projectiles.splice(0,1);
         removeNumber -= 1;
+        console.log(objectsServer.projectiles);
       }
     }
 
     for (var i = 0; i < frameObject.projectileList.projectiles.length; i++) {
       if (frameObject.projectileList.projectiles.length - objectsServer.projectiles.length > 0) {
-        for (var x = 0; x < frameObject.projectileList.projectiles.length - objectsServer.projectiles.length; x++) {
-          objectsServer.projectiles.push(frameObject.projectileList.projectiles[i]);
-          var projectile = game.add.sprite(frameObject.projectileList.projectiles[i].X_pos, frameObject.projectileList.projectiles[i].Y_pos, 'red_circle_small');
-          objectsClient.projectiles.push(projectile);
-        }
+        objectsServer.projectiles.push(frameObject.projectileList.projectiles[i]);
+        var projectile = game.add.sprite(frameObject.projectileList.projectiles[i].X_pos, frameObject.projectileList.projectiles[i].Y_pos, 'red_circle_small');
+        objectsClient.projectiles.push(projectile);
       } else {
         objectsClient.projectiles[i].x = frameObject.projectileList.projectiles[i].X_pos;
         objectsClient.projectiles[i].y = frameObject.projectileList.projectiles[i].Y_pos;
