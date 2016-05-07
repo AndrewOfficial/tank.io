@@ -1,9 +1,9 @@
 module.exports = {
   dimensions: {
     minY: 0,
-    maxY: 600,
+    maxY: 575,
     minX: 0,
-    maxX: 1000
+    maxX: 975
   },
   speedMultiplier:3,
   startingWidth: 100,

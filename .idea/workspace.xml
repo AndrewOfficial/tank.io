@@ -4,7 +4,8 @@
     <list default="true" id="d3b5ee9a-880f-4849-a2ac-bf65a2ed40ff" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/scripts/game/game.js" afterPath="$PROJECT_DIR$/public/scripts/game/game.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/webServer.js" afterPath="$PROJECT_DIR$/server/webServer.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/views/main.html" afterPath="$PROJECT_DIR$/public/views/main.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/Constants.js" afterPath="$PROJECT_DIR$/server/Constants.js" />
     </list>
     <ignored path="tankio.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,8 +29,18 @@
       <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/scripts/game/game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.57591623">
-              <caret line="180" column="51" selection-start-line="180" selection-start-column="51" selection-end-line="180" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.8376963">
+              <caret line="35" column="76" selection-start-line="35" selection-start-column="76" selection-end-line="35" selection-end-column="76" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/views/main.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="16" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -48,8 +59,8 @@
       <file leaf-file-name="webServer.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/webServer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.5185184">
-              <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+            <state vertical-scroll-proportion="-12.111111">
+              <caret line="210" column="43" selection-start-line="210" selection-start-column="43" selection-end-line="210" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -58,8 +69,8 @@
       <file leaf-file-name="objectLibrary.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/objects/objectLibrary.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.2222223">
-              <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+            <state vertical-scroll-proportion="-6.111111">
+              <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -89,7 +100,7 @@
         <entry file="file://$PROJECT_DIR$/server/Constants.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+              <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -138,7 +149,6 @@
         <option value="$PROJECT_DIR$/public/scripts/appConfig.js" />
         <option value="$PROJECT_DIR$/server/apiRoutes/mainRoute.js" />
         <option value="$PROJECT_DIR$/server/modules/ObjectLibrary.js" />
-        <option value="$PROJECT_DIR$/public/views/main.html" />
         <option value="$PROJECT_DIR$/server/modules/objectLibrary.js" />
         <option value="$PROJECT_DIR$/public/stylesheets/style.less" />
         <option value="$PROJECT_DIR$/package.json" />
@@ -147,9 +157,10 @@
         <option value="$PROJECT_DIR$/public/scripts/factories/firstFactory.js" />
         <option value="$PROJECT_DIR$/public/scripts/objectLib/general.js" />
         <option value="$PROJECT_DIR$/server/views/layout.jade" />
-        <option value="$PROJECT_DIR$/server/Constants.js" />
         <option value="$PROJECT_DIR$/server/objects/objectLibrary.js" />
+        <option value="$PROJECT_DIR$/public/views/main.html" />
         <option value="$PROJECT_DIR$/server/webServer.js" />
+        <option value="$PROJECT_DIR$/server/Constants.js" />
         <option value="$PROJECT_DIR$/public/scripts/game/game.js" />
       </list>
     </option>
@@ -235,6 +246,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -591,6 +606,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="3" column="104" selection-start-line="3" selection-start-column="104" selection-end-line="3" selection-end-column="104" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -613,6 +629,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="1" column="93" selection-start-line="1" selection-start-column="93" selection-end-line="1" selection-end-column="93" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -659,6 +676,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="88" selection-start-line="0" selection-start-column="88" selection-end-line="0" selection-end-column="88" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -773,13 +791,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/views/main.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="104" selection-start-line="3" selection-start-column="104" selection-end-line="3" selection-end-column="104" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/start.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -819,26 +830,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/Constants.js">
+    <entry file="file://$PROJECT_DIR$/public/views/main.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/objects/objectLibrary.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.2222223">
-          <caret line="16" column="31" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/webServer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.5185184">
-          <caret line="162" column="0" selection-start-line="162" selection-start-column="0" selection-end-line="162" selection-end-column="0" />
+          <caret line="0" column="16" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -851,10 +846,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/server/webServer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.111111">
+          <caret line="210" column="43" selection-start-line="210" selection-start-column="43" selection-end-line="210" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/objects/objectLibrary.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.111111">
+          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/Constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="21" selection-start-line="9" selection-start-column="21" selection-end-line="9" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/public/scripts/game/game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.57591623">
-          <caret line="180" column="51" selection-start-line="180" selection-start-column="51" selection-end-line="180" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.8376963">
+          <caret line="35" column="76" selection-start-line="35" selection-start-column="76" selection-end-line="35" selection-end-column="76" />
           <folding />
         </state>
       </provider>

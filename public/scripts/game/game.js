@@ -23,12 +23,18 @@ var logger = 0;
 function preload() {
   game.load.image('red_circle_medium', '/images/red_circle_medium.png');
   game.load.image('red_circle_small', '/images/red_circle_small.png');
+  game.load.image('gridTile', '/images/gridTile.png');
+
   game.stage.backgroundColor = "#FFFFFF";
+
 
   socket.emit('onStart');
   socket.on('linkStart', function(obj, constants){
     C = constants;
     playerFrame.id = obj.players.length -1;
+
+    game.add.tileSprite(0, 0, C.dimensions.maxX + 25, C.dimensions.maxY + 25, 'gridTile');
+
   });
 }
 
@@ -137,9 +143,6 @@ function create() {
 // Update Game Object Positions/info
   socket.on('frame', function (frameObject) {
     frameObject = JSON.parse(frameObject);
-    if (frameObject.projectileList.removeNumber > 0){
-      console.log(frameObject.projectileList.removeNumber);
-    }
     updateGame();
     if (logger> 600){
       console.log(frameObject);
@@ -152,7 +155,6 @@ function create() {
     // update players
     for (var i in frameObject.players) {
       if (objectsClient.players[i] === undefined) {
-        console.log("SLDKFJSLKDJFlSD");
         objectsServer.players[i] = frameObject.players[i];
         var player = game.add.sprite(frameObject.players[i].X_pos, frameObject.players[i].Y_pos, 'red_circle_medium');
         objectsClient.players.push(player);
@@ -170,7 +172,6 @@ function create() {
         x.destroy();
         objectsServer.projectiles.splice(0,1);
         removeNumber -= 1;
-        console.log(objectsServer.projectiles);
       }
     }
 
